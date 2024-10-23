@@ -10,10 +10,17 @@ function App() {
   const [sport, setSport] = useState('');
   const [counter, setCounter] = useState(1);
   const [users,setUsers] = useState([]);
+  const [apiUsers, setApiUsers] = useState([]);
 
   useEffect(() => {
-    console.log("RENDER");
-  }, [users]);
+    fetch('https://jsonplaceholder.typicode.com/users', 
+      {
+        method:"GET",
+      }) 
+    .then((res) => res.json())
+    .then((data) => setApiUsers(data))
+    .catch((err) => console.log(error));
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -45,6 +52,7 @@ function App() {
       <button>Add User</button>
     </form>
     <br /><br />
+    {apiUsers.map((apiUser) => <h1>{apiUser.id}</h1>)}
     {users.map((user) => <UserDetails key={user.id} userInfo={user} setUsers={setUsers}></UserDetails>)}
     
   </div>
